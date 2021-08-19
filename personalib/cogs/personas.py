@@ -15,7 +15,6 @@ import discord
 from fuzzywuzzy import process
 from discord.ext import commands
 
-from personalib.context import Context
 from personalib.constants import GM_ROLE_ID
 
 MIN_NAME_LEN = 2
@@ -47,7 +46,7 @@ class LRU(OrderedDict[Any, Any]):
 
 class Persona:
     @classmethod
-    async def convert(cls, ctx: Context, argument: str):
+    async def convert(cls, ctx, argument: str):
         personas_cog = ctx.bot.get_cog("Personas")
 
         try:
@@ -127,7 +126,7 @@ class Personas(commands.Cog):
 
     @commands.group(invoke_without_command=True, ignore_extra=False, aliases=["p"])
     @commands.guild_only()
-    async def persona(self, ctx: Context) -> None:
+    async def persona(self, ctx) -> None:
         """Persona management"""
 
         await ctx.send_help(ctx.command)
@@ -232,7 +231,7 @@ class Personas(commands.Cog):
 
     @persona.command()
     @commands.has_role(GM_ROLE_ID)
-    async def delete(self, ctx: Context, persona: Persona) -> None:
+    async def delete(self, ctx, persona: Persona) -> None:
         """Delete persona"""
 
         persona_id = persona["id"]
@@ -249,7 +248,7 @@ class Personas(commands.Cog):
 
     @persona.command(aliases=["e"])
     @commands.has_role(GM_ROLE_ID)
-    async def edit(self, ctx: Context, persona: Persona) -> None:
+    async def edit(self, ctx, persona: Persona) -> None:
         """Edit persona"""
 
         persona_id = persona["id"]
@@ -271,7 +270,7 @@ class Personas(commands.Cog):
 
     @persona.command(name="use", aliases=["u"])
     @commands.bot_has_permissions(manage_messages=True, manage_webhooks=True)
-    async def add_persona(self, ctx: Context, persona: Persona) -> None:
+    async def add_persona(self, ctx, persona: Persona) -> None:
         """Use persona or switch to another one"""
 
         self.personas[ctx.author.id] = persona["id"]
@@ -282,7 +281,7 @@ class Personas(commands.Cog):
 
     @persona.command(name="disable", aliases=["d", "off"])
     @commands.guild_only()
-    async def disable_persona(self, ctx: Context) -> None:
+    async def disable_persona(self, ctx) -> None:
         """Remove personal persona"""
 
         if ctx.author.id in self.personas:
@@ -292,7 +291,7 @@ class Personas(commands.Cog):
 
         await ctx.send("Removed persona")
 
-    async def _replace_message(self, message: discord.Message) -> None:
+    async def _replace_message(self, message) -> None:
         if message.author.bot:
             return
 

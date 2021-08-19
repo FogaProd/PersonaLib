@@ -10,7 +10,6 @@ import discord
 
 from discord.ext import commands
 
-from .context import Context
 from .constants import PREFIX
 
 log = logging.getLogger(__name__)
@@ -76,14 +75,6 @@ class PersonaLib(commands.Bot):
                 traceback.print_exc()
             else:
                 print(f"loaded {extension}")
-
-    async def get_context(
-        self,
-        message: discord.Message,
-        *,
-        cls: Optional[Type[discord.ext.Context]] = None,
-    ) -> Context:
-        return await super().get_context(message, cls=cls or Context)
 
     async def on_message(self, message: discord.Message) -> None:
         if message.author.bot:
