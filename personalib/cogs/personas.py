@@ -184,7 +184,10 @@ class Personas(commands.Cog):
                 "message", check=check, timeout=timeout
             )
 
-            avatar_url = avatar_msg.content
+            if avatar_msg.attachments:
+                avatar_url = avatar_msg.attachments[0].url
+            else:
+                avatar_url = avatar_msg.content
 
             if not avatar_url.startswith(("http://", "https://")):
                 return await avatar_msg.reply("Avatar URL must be a valid URL")
