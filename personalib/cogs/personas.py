@@ -314,7 +314,7 @@ class Personas(commands.Cog):
 
         # TODO: some other way to prevent accent trigger that is not a missing feature?
 
-        if not (persona_id := self.personas.get(message.author.id)):
+        if (persona_id := self.personas.get(message.author.id)) is None:
             return
 
         persona = self.available_personas[persona_id]
