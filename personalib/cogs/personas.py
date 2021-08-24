@@ -27,8 +27,10 @@ REQUIRED_PERMS = discord.Permissions(
 
 log = logging.getLogger(__name__)
 
-# https://docs.python.org/3/library/collections.html#ordereddict-examples-and-recipes
+
 class LRU(OrderedDict[Any, Any]):
+    # https://docs.python.org/3/library/collections.html#ordereddict-examples-and-recipes
+
     def __init__(self, maxsize: int = 128, /, *args: Any, **kwds: Any):
         self.maxsize = maxsize
         super().__init__(*args, **kwds)
@@ -114,6 +116,8 @@ class Personas(commands.Cog):
         # json only supports string dict keys, convert back
         self.personas = {int(k): v for k, v in data["personas"].items()}
 
+        self.dm_mode = False
+
     def dump_data(self):
         data = dict(
             id=self.id,
@@ -123,6 +127,18 @@ class Personas(commands.Cog):
 
         with open(self._personas_file, "w") as f:
             f.write(json.dumps(data, indent=2))
+
+    @commands.command()
+    @commands.has_role(GM_ROLE_ID)
+    async def dm(self, ctx, mode: str):
+        if mode == "0":
+            self.dm_mode = False
+            await ctx.send("Switched to chat mode")
+        elif mode == "1":
+            self.mode = True
+            await ctx.send("Switched to DM mode")
+        else:
+            await ctx.reply("Invalid mode. Expected 0 (chat) or 1 (DM)")
 
     @commands.group(invoke_without_command=True, ignore_extra=False, aliases=["p"])
     @commands.guild_only()
@@ -280,7 +296,9 @@ class Personas(commands.Cog):
 
         self.dump_data()
 
-        await ctx.send(f"Applied persona **{persona['name']}**")
+        target = ctx.author if self.dm_mode else ctx
+
+        await target.send(f"Applied persona **{persona['name']}**")
 
     @persona.command(name="disable", aliases=["d", "off"])
     @commands.guild_only()
