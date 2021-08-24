@@ -135,7 +135,7 @@ class Personas(commands.Cog):
             self.dm_mode = False
             await ctx.send("Switched to chat mode")
         elif mode == "1":
-            self.mode = True
+            self.dm_mode = True
             await ctx.send("Switched to DM mode")
         else:
             await ctx.reply("Invalid mode. Expected 0 (chat) or 1 (DM)")
