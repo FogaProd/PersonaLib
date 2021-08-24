@@ -130,6 +130,7 @@ class Personas(commands.Cog):
 
     @commands.command()
     @commands.has_role(GM_ROLE_ID)
+    @commands.bot_has_guild_permissions(manage_messages=True)
     async def dm(self, ctx, mode: str):
         if mode == "0":
             self.dm_mode = False
@@ -296,7 +297,11 @@ class Personas(commands.Cog):
 
         self.dump_data()
 
-        target = ctx.author if self.dm_mode else ctx
+        if self.dm_mode:
+            await ctx.message.delete()
+            target = ctx.author
+        else:
+            target = ctx
 
         await target.send(f"Applied persona **{persona['name']}**")
 
