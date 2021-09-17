@@ -290,7 +290,7 @@ class Personas(commands.Cog):
 
     @persona.command(name="use", aliases=["u"])
     @commands.bot_has_permissions(manage_messages=True, manage_webhooks=True)
-    async def add_persona(self, ctx, persona: Persona) -> None:
+    async def add_persona(self, ctx, *, persona: Persona) -> None:
         """Use persona or switch to another one"""
 
         self.personas[ctx.author.id] = persona["id"]
@@ -315,7 +315,13 @@ class Personas(commands.Cog):
 
             self.dump_data()
 
-        await ctx.send("Removed persona")
+        if self.dm_mode:
+            await ctx.message.delete()
+            target = ctx.author
+        else:
+            target = ctx
+
+        await target.send("Removed persona")
 
     async def _replace_message(self, message) -> None:
         if message.author.bot:
