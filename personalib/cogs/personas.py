@@ -361,6 +361,9 @@ class Personas(commands.Cog):
         if (ctx := await self.bot.get_context(message)).valid:
             return
 
+        if message.content.lower().startswith(("?", "!", "((", "[")):
+            return
+
         try:
             await self._send_new_message(ctx, persona, message.content, message)
         except (discord.NotFound, discord.InvalidArgument):
