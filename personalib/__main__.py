@@ -10,4 +10,4 @@ if __name__ == "__main__":
     with contextlib.suppress(KeyboardInterrupt):
         asyncio.run(bot.start(os.environ["BOT_TOKEN"]))
 
-    input("press ENTER to exit")
+        input("press ENTER to exit")

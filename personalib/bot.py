@@ -39,6 +39,7 @@ class PersonaLib(commands.Bot):
                 guilds=True,
                 members=True,
                 messages=True,
+                message_content=True,
                 reactions=True,
             ),
             **kwargs,
