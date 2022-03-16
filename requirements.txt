@@ -1,3 +1,3 @@
-discord.py>=1.6<2.0.0
+discord.py @ git+https://github.com/Rapptz/discord.py@1192d842e10cc96591eadf854f88faaa73788982
 python-dotenv
 fuzzywuzzy[speedup]

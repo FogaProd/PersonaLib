@@ -1,20 +1,16 @@
 from __future__ import annotations
 
-import json
-import pathlib
 import asyncio
-import logging
 import contextlib
-
-from typing import Optional, Any
-
+import json
+import logging
+import pathlib
 from collections import OrderedDict
+from typing import Any, Optional
 
 import discord
-
-from fuzzywuzzy import process
 from discord.ext import commands
-
+from fuzzywuzzy import process
 from personalib.constants import GM_ROLE_ID
 
 MIN_NAME_LEN = 2
@@ -444,5 +440,5 @@ class Personas(commands.Cog):
         await self._replace_message(new)
 
 
-def setup(bot) -> None:
-    bot.add_cog(Personas(bot))
+async def setup(bot) -> None:
+    await bot.add_cog(Personas(bot))
